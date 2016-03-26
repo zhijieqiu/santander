@@ -157,7 +157,7 @@ print (features)
 X_sel = X[features]
 
 X_train, X_test, y_train, y_test = \
-   cross_validation.train_test_split(X_sel, y, random_state=1301, stratify=y, test_size=0.35)
+   cross_validation.train_test_split(X_sel, y, random_state=1301, stratify=y, test_size=0.30)
 # clf = xgb.XGBClassifier(max_depth   = 7,
 #                 learning_rate       = 0.02,
 #                 subsample           = 0.9,

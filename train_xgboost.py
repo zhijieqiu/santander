@@ -32,25 +32,8 @@ dtrain = xgb.DMatrix(finaltrain)
 dtest = xgb.DMatrix(testfile)
 pred = xgb.DMatrix(predfile)
 # remove constant columns
-remove = []
-for col in dtrain.columns:
-    if dtrain[col].std() == 0:
-        remove.append(col)
-mytrain.drop(remove, axis=1, inplace=True)
-pred.drop(remove, axis=1, inplace=True)
-dtrain.drop(remove, axis=1, inplace=True)
-dtest.drop(remove, axis=1, inplace=True)
-remove = []
-c = dtrain.columns
-for i in range(len(c)-1):
-    v = dtrain[c[i]].values
-    for j in range(i+1,len(c)):
-        if np.array_equal(v,dtrain[c[j]].values):
-            remove.append(c[j])
-mytrain.drop(remove, axis=1, inplace=True)
-pred.drop(remove, axis=1, inplace=True)
-dtrain.drop(remove, axis=1, inplace=True)
-dtest.drop(remove, axis=1, inplace=True)
+
+
 #pred_file = sys.argv[3]
 
 # parameters read from config file

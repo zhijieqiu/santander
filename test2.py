@@ -12,6 +12,7 @@ from sklearn.metrics import roc_auc_score
 from sklearn.pipeline import Pipeline
 from sklearn.svm import OneClassSVM
 
+
 # Input data files are available in the "../input/" directory.
 # For example, running this (by clicking run or pressing Shift+Enter) will list the files in the input directory
 
@@ -61,13 +62,16 @@ len_test  = len(X_test)
 #scale_pos_weight
 clf = xgb.XGBClassifier(missing=np.nan, max_depth=5, n_estimators=350, learning_rate=0.03, nthread=4, subsample=0.95, colsample_bytree=0.85, 
 	scale_pos_weight=radio,seed=4242)
-
+crf = RandomForestClassifier(n_estimators=50,max_depth=5)
 X_fit, X_eval, y_fit, y_eval= train_test_split(X_train, y_train, test_size=0.3)
+crf.fit(X_fit,y_fit)
 
+
+print('Overall crf AUC:', roc_auc_score(y_eval, crf.predict_proba(X_eval)[:,1]))
 # fitting
-clf.fit(X_train, y_train, early_stopping_rounds=20, eval_metric="auc", eval_set=[(X_eval, y_eval)])
+clf.fit(X_fit, y_fit, early_stopping_rounds=20, eval_metric="auc", eval_set=[(X_eval, y_eval)])
 
-print('Overall AUC:', roc_auc_score(y_train, clf.predict_proba(X_train)[:,1]))
+print('Overall AUC:', roc_auc_score(y_eval, clf.predict_proba(X_eval)[:,1]))
 
 # predicting
 y_pred= clf.predict_proba(X_test)[:,1]
@@ -76,3 +80,21 @@ submission = pd.DataFrame({"ID":id_test, "TARGET":y_pred})
 submission.to_csv("submission.csv", index=False)
 
 print('Completed!')
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
